@@ -98,7 +98,7 @@
       </header>
       <h2 class="home-h"><span>1</span>Alege lumea</h2>
       <div class="worlds">${M.THEMES.map(t => `<button class="world" data-t="${t.id}" aria-pressed="${t.id === S.theme}"
-          style="--wh:${t.v.hdr};--wa:${t.v.acc};--wb:${t.v.bg};--wi:${t.v.hdrInk};--wp:${t.pat}">
+          style="--wh:${t.v.hdr};--wa:${t.v.acc};--wb:${t.v.bg};--wi:${t.v.hdrInk};--wp:${t.pat.replace(/"/g, "&quot;")}">
           <span class="w-num">${t.nr}</span>
           <span class="w-pics">${[0, 2, 4].map(i => t.draw(i, "color")).join("")}</span>
           <span class="w-txt"><b>${t.name}</b><small>${t.tag}</small></span></button>`).join("")}</div>

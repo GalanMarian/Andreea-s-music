@@ -384,6 +384,112 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 4px solid 
 .dip-sign div { display: flex; flex-direction: column; align-items: center; gap: 2mm }
 .dip-sign span { display: block; width: 60mm; border-bottom: .5mm solid #1B2A4A; height: 10mm }
 
+/* ---------- fișele mari: 8 jocuri pe o pagină ---------- */
+.poster-page { padding: 11mm 11mm 8mm; gap: 2mm }
+.poster-page::after { display: none }
+.poster { flex: 1; display: flex; flex-direction: column; gap: 2.4mm; min-height: 0 }
+.ph {
+  height: 33mm; flex: none; display: grid; grid-template-columns: 38mm minmax(0, 1fr) 38mm; align-items: center; gap: 2mm;
+  border-radius: 6mm; background-color: var(--phb); background-image: var(--php); background-size: 26mm; padding: 1mm 3mm; overflow: hidden;
+}
+.ph-chars { display: flex; align-items: flex-end; height: 100% }
+.ph-chars svg { width: 21mm; height: 21mm; flex: none }
+.ph-chars svg:first-child { width: 27mm; height: 27mm; margin-right: -6mm }
+.ph-chars.right { justify-content: flex-end }
+.ph-chars.right svg:first-child { margin-right: -5mm }
+.ph-txt { text-align: center; background: #fff; border-radius: 5mm; padding: 2mm 3mm; box-shadow: 0 .8mm 0 rgba(0, 0, 0, .12) }
+.ph-title { font-family: var(--display); font-weight: 800; font-size: 19pt; line-height: 1; color: var(--pht); text-wrap: balance }
+[data-theme] .page .ph-title { color: var(--pht) }
+.ph-sub { font-size: 9pt; margin-top: 1mm; color: #3B4A6B }
+.pgrid { flex: 1; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: repeat(4, minmax(0, 1fr)); gap: 2.4mm; min-height: 0 }
+.pb { border: .7mm solid var(--bc); border-radius: 4mm; background: var(--bt); padding: 1.8mm 2.4mm 2mm; display: flex; flex-direction: column; min-height: 0; overflow: hidden }
+.pb-h { display: flex; gap: 2mm; align-items: flex-start }
+.pb-n { width: 7.5mm; height: 7.5mm; border-radius: 50%; background: var(--bc); color: #fff; font-family: var(--display); font-weight: 800; font-size: 13pt; display: grid; place-items: center; flex: none; line-height: 1; padding-top: .6mm }
+.pb-t { font-family: var(--display); font-weight: 800; font-size: 11.5pt; line-height: 1.05; color: var(--bc) }
+.pb-s { font-size: 7.4pt; color: #3B4A6B; line-height: 1.22; margin-top: .3mm }
+.pb-c { flex: 1; min-height: 0; display: flex; flex-direction: column; justify-content: center; margin-top: 1mm; background: #fff; border-radius: 2.6mm; padding: 1mm 1.4mm }
+.pb-c > svg { width: 100%; height: auto; max-height: 100% }
+
+/* 2: colorează după instrucțiuni */
+.cbi { display: flex; flex-direction: column; gap: 1.2mm }
+.cbi-notes { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 1mm }
+.cbi-n { display: flex; flex-direction: column; align-items: center; gap: .6mm }
+.cbi-n svg { width: 6.2mm; height: 9mm }
+.cbi-n b { font-family: var(--display); font-size: 8pt; line-height: 1; border: .3mm solid #8C99B3; border-radius: 1.2mm; padding: .5mm 0 .2mm; width: 100%; text-align: center }
+.cbi-leg { display: grid; grid-template-columns: 1fr 1fr; gap: .3mm 3mm; font-size: 7pt; line-height: 1 }
+.cbi-leg div { display: flex; align-items: center; gap: 1.2mm }
+.cbi-leg svg { width: 8mm; height: 2.6mm; flex: none }
+
+/* 3: numără timpii */
+.beats { display: flex; flex-direction: column; gap: .5mm }
+.beat { display: grid; grid-template-columns: 10mm 1fr 6mm 20mm; align-items: center; gap: 1.5mm; height: 4.7mm }
+.beat .bg svg { width: 10mm; height: 4.7mm; display: block }
+.beat .bn { font-size: 6.8pt; color: #56658A; line-height: 1 }
+.beat .bw { height: 4.4mm; border: .3mm dashed #8C99B3; border-radius: 1mm }
+.beat .bc { display: flex; gap: .8mm }
+.beat .bc svg { width: 4.2mm; height: 4.2mm }
+
+/* 4: vioara */
+.vio { display: grid; grid-template-columns: minmax(0, 1fr) 21mm; gap: 1.5mm; align-items: center; height: 100% }
+.vio svg { width: 100%; height: 100%; max-height: 33mm }
+.vio-bank { display: flex; flex-direction: column; gap: .8mm }
+.vio-bank span { font-family: var(--display); font-weight: 800; font-size: 7.2pt; line-height: 1.05; text-align: center; border: .3mm solid var(--bc); color: var(--bc); border-radius: 1.4mm; padding: .9mm .6mm .6mm; background: #fff }
+.vio-bank.row { flex-direction: row; justify-content: center; flex-wrap: wrap }
+.vio-bank.row span { padding: .7mm 2mm .4mm }
+
+/* 6: desenează nota */
+.draw8 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .8mm 1.6mm }
+.draw8 div { display: flex; flex-direction: column; align-items: center }
+.draw8 b { font-family: var(--display); font-size: 8pt; line-height: 1 }
+.draw8 svg { width: 100%; height: auto; display: block }
+
+/* 7: melodia */
+.mel b { font-family: var(--display); font-size: 8pt }
+
+/* 8: labirint */
+.mz { display: grid; grid-template-columns: 11mm minmax(0, 1fr) 10mm; align-items: center; gap: 1mm; height: 100% }
+.mz > svg { width: 100%; height: 100%; max-height: 32mm }
+.mz-start, .mz-goal { display: flex; flex-direction: column; align-items: center; font-family: var(--display); font-size: 7pt; line-height: 1 }
+.mz-start svg { width: 11mm; height: 11mm }
+.mz-goal svg { width: 9mm; height: 7mm }
+
+/* fișa 2 */
+.pairs { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5mm 4mm }
+.pairs svg { height: 14.5mm; width: auto; max-width: 100%; display: block; margin: 0 auto }
+.count { display: flex; flex-direction: column; gap: 1mm }
+.count-row { display: flex; justify-content: space-around; font-family: var(--display); font-weight: 800; font-size: 10pt }
+.count-row span { display: flex; align-items: center; gap: 1.2mm }
+.count-row .sw { width: 4mm; height: 4mm }
+.count-row i { display: inline-block; width: 9mm; height: 6mm; border: .3mm dashed #8C99B3; border-radius: 1.2mm }
+.inst { display: flex; flex-direction: column; gap: 1.4mm }
+.inst-row { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 2mm }
+.inst-row div { display: flex; flex-direction: column; align-items: center; gap: 1mm }
+.inst-row svg { width: 100%; max-height: 17mm }
+.inst-row i { display: block; width: 100%; border-bottom: .3mm solid #1B2A4A; height: 3mm }
+.rows { display: flex; flex-direction: column; gap: 1.2mm }
+.rrow { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 1mm }
+.rc { display: flex; flex-direction: column; align-items: center; border: .3mm solid #C6D2E6; border-radius: 1.4mm; padding: .4mm 0; height: 9.5mm; justify-content: center }
+.rc svg { width: 9mm; height: 5.4mm }
+.rc small { font-size: 6.4pt; line-height: 1; color: #56658A }
+.rc.empty { border: .35mm dashed #8C99B3; background: #FBFCFF }
+.mini-unite { display: flex; flex-direction: column; gap: .3mm; height: 100%; justify-content: space-between }
+.mu-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8mm; align-items: center; height: 8.4mm; overflow: hidden }
+.mu-l, .mu-r { display: flex; align-items: center; gap: 1.5mm; height: 100% }
+.mu-l svg { width: 8.4mm; height: 8.4mm; flex: none }
+.mu-l b { font-family: var(--display); font-size: 8pt; flex: 1 }
+.mu-r svg { height: 8.2mm; width: auto; display: block }
+.mini-unite .dot { width: 2.2mm; height: 2.2mm }
+.stairs8 { width: 100%; height: 100%; max-height: 34mm }
+.rid { display: grid; grid-template-columns: minmax(0, 1fr) 15mm; align-items: center; gap: 2mm }
+.rid ol { margin: 0; padding-left: 4mm; display: flex; flex-direction: column; gap: 1.6mm; font-size: 8.4pt; line-height: 1.2 }
+.rid li i { display: block; width: 24mm; border-bottom: .3mm solid #1B2A4A; height: 4mm }
+.rid-pic svg { width: 15mm; height: 15mm }
+.big-char { display: grid; grid-template-columns: 34mm minmax(0, 1fr); align-items: center; gap: 2mm; height: 100% }
+.big-char svg { width: 34mm; height: 34mm }
+.big-char b { font-family: var(--display); font-size: 14pt; display: block }
+.big-char span { font-size: 8pt; display: flex; gap: 1.6mm; align-items: flex-start; line-height: 1.25 }
+.big-char .sw { width: 5mm; height: 5mm }
+
 /* ---------- tipărire / PDF ---------- */
 #printArea { display: none }
 body.print-mode { background: #6E7690 }

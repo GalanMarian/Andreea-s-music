@@ -41,6 +41,8 @@
       <div class="dip-chars">${[0, 2, 4, 7].map(i => T.draw(i, "line")).join("")}</div>
       <div class="dip-sign"><div>Data<span></span></div><div>Semnătura<span></span></div></div></div>`, "dip-page"));
 
+    if (M.posterPages) pages.push(...M.posterPages(T, A, page));
+
     N.forEach((n, i) => {
       pages.push(page(T, A, "portret-" + i, `${T.chars[i].n} · ${M.syl(i)}`, `Eu sunt ${T.chars[i].n}!`, `Nota mea e <b>${M.syl(i)}</b>. ${T.hint(i)}`,
         `<div class="por">

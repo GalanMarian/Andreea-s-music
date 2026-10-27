@@ -145,7 +145,8 @@ window.M = {};
       const y = M.yOf(n.i);
       s += `<g class="head${n.cls ? " " + n.cls : ""}" data-k="${k}">`;
       if (!o.noHit) s += `<rect x="${x - gap / 2 + 2}" y="20" width="${gap - 4}" height="128" fill="transparent"/>`;
-      if (n.ring) s += `<rect x="${x - gap / 2 + 4}" y="22" width="${gap - 8}" height="114" rx="14" fill="${n.ring}" opacity=".45"/>`;
+      if (n.dash) s += `<rect x="${x - gap / 2 + 5}" y="26" width="${gap - 10}" height="104" rx="8" fill="none" stroke="#8C99B3" stroke-width="2" stroke-dasharray="5 4"/>`;
+      if (n.ring) s +=`<rect x="${x - gap / 2 + 4}" y="22" width="${gap - 8}" height="114" rx="14" fill="${n.ring}" opacity=".45"/>`;
       if (!n.ghost) {
         if (n.i === 0) s += `<line x1="${x - 17}" x2="${x + 17}" y1="120" y2="120" stroke="${ink}" stroke-width="2"/>`;
         if (!o.noStem) {
