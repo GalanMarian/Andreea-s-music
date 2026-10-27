@@ -61,7 +61,8 @@
   /* portativ mic pentru cutiile strâmte: aceleași trepte ca portativul mare, la jumătate de mărime */
   function miniStaff(notes, slots = notes.length || 1, gap = 26) {
     const start = 40, W = start + slots * gap + 6, y = i => 46 - (i - 2) * 4;
-    let s = `<svg viewBox="0 0 ${W} 60" aria-label="Portativ">`;
+    // zona merge de la -4 la 70: cheia sol urcă peste linia de sus și coboară sub cea de jos
+    let s = `<svg viewBox="0 -4 ${W} 74" overflow="visible" aria-label="Portativ">`;
     for (let l = 0; l < 5; l++) s += `<line x1="2" x2="${W - 2}" y1="${14 + l * 8}" y2="${14 + l * 8}" stroke="${INK}" stroke-width="1.1"/>`;
     s += `<text class="clef" x="3" y="51" font-size="43" fill="${INK}">𝄞</text>`;
     notes.forEach((i, k) => {
@@ -212,7 +213,7 @@
 
     const picks = M.shuffle(scale, rnd).slice(0, 4), right = M.shuffle(picks, rnd);
     const q5 = `<div class="mini-unite">${picks.map((i, k) => `<div class="mu-row"><span class="mu-l">${T.draw(i, "line")}<b>${T.chars[i].n}</b><i class="dot"></i></span>
-      <span class="mu-r"><i class="dot"></i>${miniStaff([right[k]], 1, 30)}</span></div>`).join("")}</div>`;
+      <span class="mu-r"><i class="dot"></i>${miniStaff([right[k]], 1, 44)}</span></div>`).join("")}</div>`;
 
     const q6 = `<svg class="stairs8" viewBox="0 0 164 74" aria-label="Scara notelor">${scale.map(k => {
       const x = 3 + k * 20, h = 18 + k * 7.2, y = 72 - h;
