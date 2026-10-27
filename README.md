@@ -17,7 +17,8 @@ Fiecare lume are personajele, culorile, fundalul, instrumentul și recompensele 
 
 ## Fișe de colorat (PDF)
 
-- În aplicație, fila **Fișe PDF**: apeși pe o fișă și o colorezi pe ecran, apoi **Exportă PDF** (în fereastra de tipărire: *Salvează ca PDF*).
+- În aplicație, fila **Fișe PDF**: apeși pe o fișă și o colorezi pe ecran, apoi **Descarcă PDF**. PDF-ul se face direct în browser (A4, cu culorile puse), la fel pe telefon, tabletă și laptop. **Tipărește** trimite fișele la imprimantă.
+  Descărcarea directă merge când site-ul e pe un server (GitHub Pages); deschis ca fișier de pe calculator, butonul deschide tipărirea.
 - Gata făcute, în [`pdf/`](pdf/): câte un PDF pe lume și vârstă (`catei-mic.pdf`, `printese-mijlociu.pdf`, `spatiu-mare.pdf` ...). Fiecare are diplomă, 8 portrete cu nota de scris, pagini de colorat notele și pagini „unește”.
 
 Pentru a le regenera după o modificare: `./scripts/fa-pdf.sh` (are nevoie de Google Chrome).
@@ -41,6 +42,8 @@ js/themes.js       cele 5 lumi și desenele personajelor (color + contur de colo
 js/games.js        jocurile
 js/sheets.js       fișele A4, colorarea pe ecran, exportul PDF
 js/app.js          ecranul de start, filele, recompensele
+js/vendor/         jsPDF, încărcat doar la descărcarea unui PDF
+fonts/, css/fonts.css  fonturile, găzduite în proiect
 scripts/fa-pdf.sh  generează pdf/
 ```
 

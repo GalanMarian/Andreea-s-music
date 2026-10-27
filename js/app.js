@@ -30,7 +30,7 @@
       p: t => `Apasă pe ${t.noun.fav} ca să faci un cântec nou. Apoi apasă Cântă.`,
       say: t => `Apasă pe ${t.noun.fav} și fă un cântec nou. Apoi apasă pe butonul Cântă.` },
     { id: "fise", label: () => "Fișe PDF", h: () => "Fișe de colorat",
-      p: () => "Colorează pe ecran sau tipărește. Alege fișele și apasă Exportă PDF.",
+      p: () => "Colorează pe ecran, apoi descarcă fișele ca PDF sau tipărește-le.",
       say: () => "Alege o fișă și colorează-o pe ecran. Sau roagă un părinte să o tipărească." }
   ];
   // fix: la prințese, „Apasă pe el” devine „Apasă pe ea”

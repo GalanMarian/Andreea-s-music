@@ -114,6 +114,73 @@
   window.addEventListener("afterprint", () => {
     if (!document.body.classList.contains("print-mode")) document.getElementById("printArea").innerHTML = "";
   });
+  /* ---------- PDF descărcat direct, fără fereastra de tipărire ----------
+     Fiecare fișă se desenează exact ca pe ecran (fonturile și stilurile puse în ea), apoi devine o pagină A4.
+     Așa iese la fel pe telefon, tabletă și laptop, indiferent ce margini ar pune browserul la tipărire. */
+  let exportCssCache = null;
+  const toDataUrl = blob => new Promise((ok, no) => { const r = new FileReader(); r.onload = () => ok(r.result); r.onerror = no; r.readAsDataURL(blob); });
+  const getText = u => fetch(u).then(r => { if (!r.ok) throw new Error(u); return r.text(); });
+  async function exportCss() {
+    if (exportCssCache) return exportCssCache;
+    let fonts = await getText("css/fonts.css");
+    for (const ref of [...new Set(fonts.match(/\.\.\/fonts\/[\w.-]+\.woff2/g) || [])]) {
+      const blob = await fetch(ref.replace("../", "")).then(r => { if (!r.ok) throw new Error(ref); return r.blob(); });
+      fonts = fonts.split(ref).join(await toDataUrl(blob));
+    }
+    exportCssCache = fonts + "\n" + (await getText("css/app.css"));
+    return exportCssCache;
+  }
+  const loadJsPdf = () => (window.jspdf ? Promise.resolve() : new Promise((ok, no) => {
+    const s = document.createElement("script");
+    s.src = "js/vendor/jspdf.umd.min.js"; s.onload = ok; s.onerror = () => no(new Error("jsPDF"));
+    document.head.appendChild(s);
+  }));
+  const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+  async function pageToJpeg(p, fills, css, scale) {
+    const host = document.createElement("div");
+    host.innerHTML = p.html;
+    const pg = host.firstElementChild;
+    applyFills(pg, (fills || {})[p.id]);
+    const W = 794, H = 1123;
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}"><foreignObject x="0" y="0" width="${W}" height="${H}">` +
+      `<div xmlns="http://www.w3.org/1999/xhtml"><style><![CDATA[${css}]]></style>${new XMLSerializer().serializeToString(pg)}</div></foreignObject></svg>`;
+    const img = new Image();
+    await new Promise((ok, no) => { img.onload = ok; img.onerror = () => no(new Error("imagine")); img.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg); });
+    const c = document.createElement("canvas");
+    c.width = W * scale; c.height = H * scale;
+    const ctx = c.getContext("2d");
+    // Safari pune uneori fonturile abia la a doua desenare
+    for (let k = 0; k < 2; k++) {
+      ctx.fillStyle = "#fff"; ctx.fillRect(0, 0, c.width, c.height);
+      ctx.drawImage(img, 0, 0, c.width, c.height);
+      if (!k) await sleep(60);
+    }
+    return c.toDataURL("image/jpeg", .9);
+  }
+
+  /* Descarcă fișele ca PDF; dacă browserul nu poate, deschide tipărirea. onStep(k, total) arată progresul. */
+  M.exportPdf = async (pages, fills, fileName, onStep) => {
+    try {
+      if (location.protocol === "file:") throw new Error("deschis direct din fișier");
+      await loadJsPdf();
+      const css = await exportCss();
+      const pdf = new window.jspdf.jsPDF({ unit: "mm", format: "a4", compress: true });
+      for (let k = 0; k < pages.length; k++) {
+        onStep && onStep(k + 1, pages.length);
+        const jpg = await pageToJpeg(pages[k], fills, css, 2);
+        if (k) pdf.addPage("a4", "portrait");
+        pdf.addImage(jpg, "JPEG", 0, 0, 210, 297, undefined, "FAST");
+      }
+      pdf.save(fileName);
+      return true;
+    } catch (e) {
+      console.warn("PDF-ul direct nu a mers, deschid tipărirea:", e);
+      M.printPages(pages, fills);
+      return false;
+    }
+  };
+
   M.renderPrintAll = (T, A) => {
     document.getElementById("printArea").innerHTML = M.buildPages(T, A).map(p => p.html).join("");
   };
@@ -133,11 +200,12 @@
     const gallery = () => {
       open = null;
       el.innerHTML = `<div class="row">
-          <button class="btn acc" id="pdf">${M.ICON.pdf}<span>Exportă PDF (<span id="cnt"></span>)</span></button>
+          <button class="btn acc" id="pdf">${M.ICON.download}<span>Descarcă PDF (<span id="cnt"></span>)</span></button>
+          <button class="btn light" id="prn">${M.ICON.pdf}Tipărește</button>
           <button class="btn light" id="all"></button>
           <a class="btn light" href="pdf/${T.id}-${A.id}.pdf" target="_blank" rel="noopener">PDF gata făcut</a>
         </div>
-        <p class="tip">Apasă pe o fișă ca s-o colorezi pe ecran. La export, în fereastra de tipărire alege <b>Salvează ca PDF</b> sau trimite direct la imprimantă.</p>
+        <p class="tip">Apasă pe o fișă ca s-o colorezi pe ecran. <b>Descarcă PDF</b> salvează fișele alese, cu culorile tale, într-un fișier A4. <b>Tipărește</b> le trimite direct la imprimantă.</p>
         <div class="thumbs" id="thumbs">${pages.map((p, k) => `<div class="thumb">
           <button class="thumb-open" data-k="${k}" aria-label="Colorează: ${p.label}"><div class="scaler">${p.html}</div></button>
           <label class="thumb-pick"><input type="checkbox" id="pick-${p.id}" data-id="${p.id}" ${chosen.has(p.id) ? "checked" : ""}><span>${k + 1}. ${p.label}</span></label>
@@ -155,7 +223,9 @@
         thumbs.querySelectorAll("input").forEach(c => { c.checked = chosen.has(c.dataset.id); });
         sync();
       };
-      el.querySelector("#pdf").onclick = () => { if (chosen.size) M.printPages(pages.filter(p => chosen.has(p.id)), fills); };
+      const picked = () => pages.filter(p => chosen.has(p.id));
+      el.querySelector("#pdf").onclick = e => { if (chosen.size) download(e.currentTarget, picked(), `music-hub-${T.id}-${A.id}.pdf`); };
+      el.querySelector("#prn").onclick = () => { if (chosen.size) M.printPages(picked(), fills); };
       sync();
       watch(thumbs);
     };
@@ -167,7 +237,8 @@
           <button class="btn light" id="prev" ${k === 0 ? "disabled" : ""}>‹</button>
           <button class="btn light" id="nextp" ${k === pages.length - 1 ? "disabled" : ""}>›</button>
           <button class="btn light" id="clear">Șterge culorile</button>
-          <button class="btn acc" id="pdf1">${M.ICON.pdf}Exportă fișa asta</button>
+          <button class="btn acc" id="pdf1">${M.ICON.download}<span>Descarcă fișa</span></button>
+          <button class="btn light" id="prn1">${M.ICON.pdf}Tipărește</button>
         </div>
         <div class="palette" id="pal">${N.map((n, i) => `<button class="pal" data-c="${n.c}" style="--c:${n.c}" aria-label="${M.syl(i)}, ${n.cn}"><span>${M.syl(i)}</span></button>`).join("")}${EXTRA.map(x => `<button class="pal${x.t === "gumă" ? " eraser" : ""}" data-c="${x.c}" style="--c:${x.c}" aria-label="${x.t}"><span>${x.t}</span></button>`).join("")}</div>
         <div class="editor"><div class="scaler" id="ed">${p.html}</div></div>`;
@@ -187,9 +258,20 @@
       el.querySelector("#prev").onclick = () => editor(k - 1);
       el.querySelector("#nextp").onclick = () => editor(k + 1);
       el.querySelector("#clear").onclick = () => { delete fills[p.id]; save(); editor(k); };
-      el.querySelector("#pdf1").onclick = () => M.printPages([p], fills);
+      el.querySelector("#pdf1").onclick = e => download(e.currentTarget, [p], `music-hub-${T.id}-${p.id}.pdf`);
+      el.querySelector("#prn1").onclick = () => M.printPages([p], fills);
       mark();
       watch(el.querySelector(".editor"));
+    };
+
+    // butonul arată cât a lucrat, apoi revine la textul lui
+    const download = async (btn, list, name) => {
+      if (btn.disabled) return;
+      const lbl = btn.querySelector("span"), old = lbl.innerHTML;
+      btn.disabled = true;
+      await M.exportPdf(list, fills, name, (k, n) => { lbl.textContent = n > 1 ? `Pregătesc PDF-ul… ${k} din ${n}` : "Pregătesc PDF-ul…"; });
+      btn.disabled = false; lbl.innerHTML = old;
+      if (open === null) el.querySelector("#cnt").textContent = chosen.size + (chosen.size === 1 ? " fișă" : " fișe");
     };
 
     const watch = root => {

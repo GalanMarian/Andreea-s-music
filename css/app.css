@@ -394,7 +394,7 @@ body.print-mode #printArea { display: flex; flex-direction: column; align-items:
   html, body { background: #fff !important }
   body > *:not(#printArea) { display: none !important }
   #printArea { display: block !important; padding: 0 !important }
-  .page { break-after: page; margin: 0 }
+  .page { break-after: page; page-break-after: always; break-inside: avoid; margin: 0; height: 296.8mm }
   .page:last-child { break-after: auto }
   * { -webkit-print-color-adjust: exact; print-color-adjust: exact }
 }

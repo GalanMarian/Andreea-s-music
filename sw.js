@@ -1,10 +1,11 @@
 /* Merge și fără internet după prima vizită. Rețeaua are prioritate, ca modificările noi să apară imediat;
    fără rețea, se folosește copia salvată. PDF-urile nu se salvează (sunt mari). */
-const CACHE = "music-hub-v1";
+const CACHE = "music-hub-v2";
 const CORE = [
-  "./", "index.html", "css/app.css", "manifest.webmanifest",
+  "./", "index.html", "css/app.css", "css/fonts.css", "manifest.webmanifest",
   "js/core.js", "js/themes.js", "js/games.js", "js/sheets.js", "js/app.js",
-  "icons/icon-192.png", "icons/icon.svg"
+  "icons/icon-192.png", "icons/icon.svg", "js/vendor/jspdf.umd.min.js",
+  "fonts/baloo2-800-latin.woff2", "fonts/baloo2-800-latin-ext.woff2", "fonts/nunito-latin.woff2", "fonts/nunito-latin-ext.woff2", "fonts/notomusic-clef.woff2"
 ];
 
 self.addEventListener("install", e => {
@@ -21,8 +22,7 @@ self.addEventListener("fetch", e => {
   const req = e.request;
   if (req.method !== "GET") return;
   const url = new URL(req.url);
-  const fonts = url.hostname === "fonts.googleapis.com" || url.hostname === "fonts.gstatic.com";
-  if (!fonts && url.origin !== self.location.origin) return;
+  if (url.origin !== self.location.origin) return;
   if (url.pathname.endsWith(".pdf")) return;
   e.respondWith(
     fetch(req)
