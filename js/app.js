@@ -65,8 +65,11 @@
     Object.entries(t.v).forEach(([k, v]) => r.setProperty("--" + k.replace(/[A-Z]/g, m => "-" + m.toLowerCase()), v));
     r.setProperty("--pat", t.pat);
     document.documentElement.dataset.theme = t.id;
+    document.body.classList.toggle("on-home", S.view === "home");
+    const meta = document.querySelector('meta[name="theme-color"]');
+    if (meta) meta.content = S.view === "home" ? "#89CFF0" : t.v.hdr;
     M.setVoice(t.voice);
-    document.title = S.view === "home" ? "Muzica Andreei" : `${t.name} Do-Re-Mi · Muzica Andreei`;
+    document.title = S.view === "home" ? "Andreea Rotariu Music Hub" : `${t.name} Do-Re-Mi · Andreea Rotariu Music Hub`;
   }
 
   const app = document.getElementById("app");
@@ -90,7 +93,7 @@
     app.innerHTML = `<div class="home wrap">
       <header class="home-top">
         <div class="home-notes" aria-hidden="true">${M.NOTES.map(n => `<i style="background:${n.c}"></i>`).join("")}</div>
-        <h1>Muzica <span>Andreei</span></h1>
+        <h1><span class="h1a">Andreea Rotariu</span><span class="h1b">Music Hub</span></h1>
         <p>Do, Re, Mi pentru muzicieni mici. Alege o lume și vârsta, apoi cântă, ghicește și colorează.</p>
       </header>
       <h2 class="home-h"><span>1</span>Alege lumea</h2>
@@ -98,13 +101,13 @@
           style="--wh:${t.v.hdr};--wa:${t.v.acc};--wb:${t.v.bg};--wi:${t.v.hdrInk};--wp:${t.pat}">
           <span class="w-num">${t.nr}</span>
           <span class="w-pics">${[0, 2, 4].map(i => t.draw(i, "color")).join("")}</span>
-          <b>${t.name}</b><small>${t.tag}</small></button>`).join("")}</div>
+          <span class="w-txt"><b>${t.name}</b><small>${t.tag}</small></span></button>`).join("")}</div>
       <h2 class="home-h"><span>2</span>Câți ani are muzicianul?</h2>
       <div class="ages">${Object.values(M.AGES).map(a => `<button class="age" data-a="${a.id}" aria-pressed="${a.id === S.age}">
           <b>${a.nr}</b><span>ani</span><small>${a.what}</small></button>`).join("")}</div>
       <div class="home-go">
-        <button class="btn acc big" id="go">${M.ICON.play}Hai să cântăm!</button>
-        <button class="btn light big" id="goPdf">${M.ICON.brush}Fișe de colorat</button>
+        <button class="btn big home-cta" id="go">${M.ICON.play}Hai să cântăm!</button>
+        <button class="btn big home-alt" id="goPdf">${M.ICON.brush}Fișe de colorat</button>
       </div>
     </div>`;
     app.querySelector(".worlds").onclick = e => {
@@ -163,5 +166,9 @@
     render();
     window.addEventListener("hashchange", () => { const h = location.hash.slice(1); if (TABS.some(x => x.id === h) && h !== S.tab) go({ view: "app", tab: h }); });
     try { window.speechSynthesis && speechSynthesis.getVoices(); } catch (e) {}
+    // fără internet după prima vizită (doar pe http/https, nu și la deschiderea fișierului direct)
+    if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
+      window.addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
+    }
   }
 })(window.M);

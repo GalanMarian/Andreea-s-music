@@ -15,7 +15,7 @@
   /* 1 — cunoaște personajele */
   G.personaje = (el, T) => {
     let hl = -1, stop = null;
-    el.innerHTML = `<div class="staff-box" id="st"></div>
+    el.innerHTML = `<div class="staff-box wide" id="st"></div>
       <div class="row mt"><button class="btn acc" id="scale">${M.ICON.play}Cântă toată scara</button></div>
       <div class="cards" id="cards">${N.map((_, i) => card(T, i)).join("")}</div>`;
     const st = el.querySelector("#st"), grid = el.querySelector("#cards");
@@ -188,7 +188,7 @@
     const pages = songsOf(A).map(s => ({ t: s.t, n: s.n.slice(0, A.colorLen) }));
     let pg = M.store.get("pg-" + A.id, 0) % pages.length, sel = null, filled = [], help = A.help, stop = null;
     el.innerHTML = `<div class="chips" id="pages"></div>
-      <div class="staff-box" id="st"></div>
+      <div class="staff-box wide" id="st"></div>
       <div class="row mt"><button class="btn light" id="help"></button><button class="btn light" id="listen">${M.ICON.ear}Ascultă</button></div>
       <p class="msg" id="msg" aria-live="polite"></p>
       <div class="crayons" id="cr">${crayons(T, "Culoarea")}</div>`;
@@ -233,7 +233,7 @@
   G.compune = (el, T, A) => {
     const MAX = A.compose;
     let tune = M.store.get("tune", [0, 2, 4, 7, 4, 2, 0]).slice(0, MAX), stop = null;
-    el.innerHTML = `<div class="staff-box" id="st"></div>
+    el.innerHTML = `<div class="staff-box wide" id="st"></div>
       <div class="row mt"><button class="btn acc" id="go">${M.ICON.play}Cântă</button><button class="btn light" id="undo">Șterge ultima</button><button class="btn light" id="clr">Foaie nouă</button></div>
       <p class="msg" id="msg" aria-live="polite"></p>
       <div class="crayons" id="cr">${crayons(T, "Adaugă")}</div>`;

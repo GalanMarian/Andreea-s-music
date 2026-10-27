@@ -1,4 +1,4 @@
-# Muzica Andreei
+# Andreea Rotariu Music Hub
 
 Fișe muzicale interactive pentru copii de 3–8 ani. Notele Do-Re-Mi au fiecare culoarea lor, iar fiecare notă are un personaj.
 
@@ -25,6 +25,8 @@ Pentru a le regenera după o modificare: `./scripts/fa-pdf.sh` (are nevoie de Go
 ## Cum se deschide
 
 Fără instalare: deschide `index.html` în browser. Sunetul pornește după prima atingere.
+
+Arată bine pe telefon, tabletă și laptop. Publicat pe un server (de exemplu GitHub Pages), se poate pune pe ecranul telefonului („Adaugă pe ecranul principal”) și merge și fără internet după prima deschidere.
 
 Link direct spre o lume și o vârstă: `index.html?tema=dinozauri&varsta=mic#pian`
 (teme: `catei`, `printese`, `dinozauri`, `spatiu`, `unicorni`; vârste: `mic`, `mijlociu`, `mare`).

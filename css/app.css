@@ -1,4 +1,4 @@
-/* Muzica Andreei — stiluri.
+/* Andreea Rotariu Music Hub — stiluri.
    Culorile lumii vin din variabilele puse de js/app.js (--bg, --hdr, --acc ...).
    Culorile notelor sunt fixe, la fel în toate lumile, ca să se lege de note, nu de personaje. */
 :root {
@@ -7,6 +7,7 @@
   --acc: #FFC23D; --acc-sh: #C98F12; --acc-ink: #1B2A4A;
   --paper: #FFFFFF; --paper-sh: #B5CDEA;
   --ink: #1B2A4A; --ink-soft: #56658A; --line: #C6D6EC;
+  --baby: #89CFF0; --baby-d: #4FA8D8; --baby-l: #DDF1FC; --baby-ink: #0F2F55;
   --display: "Baloo 2", "Arial Rounded MT Bold", "Trebuchet MS", sans-serif;
   --body: "Nunito", "Avenir Next", "Segoe UI", sans-serif;
   color-scheme: light;
@@ -20,7 +21,13 @@ body {
   background-color: var(--bg); background-image: var(--pat);
   transition: background-color .4s;
 }
-button { font: inherit; color: inherit; cursor: pointer; -webkit-tap-highlight-color: transparent }
+button { font: inherit; color: inherit; cursor: pointer; -webkit-tap-highlight-color: transparent; touch-action: manipulation }
+/* meniul mare: mereu Baby Blue, indiferent de lumea aleasă */
+body.on-home {
+  background-color: var(--baby);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140' viewBox='0 0 140 140'%3E%3Cg fill='%23ffffff' fill-opacity='.28'%3E%3Cellipse cx='26' cy='52' rx='9' ry='7' transform='rotate(-20 26 52)'/%3E%3Crect x='33' y='16' width='3.4' height='37'/%3E%3Cpath d='M33 16q14 6 12 20-2-8-12-10z'/%3E%3Cellipse cx='94' cy='112' rx='8' ry='6.4' transform='rotate(-20 94 112)'/%3E%3Cellipse cx='120' cy='104' rx='8' ry='6.4' transform='rotate(-20 120 104)'/%3E%3Crect x='100.5' y='80' width='3' height='32'/%3E%3Crect x='126.5' y='72' width='3' height='32'/%3E%3Cpath d='M100.5 80l29-8v7l-29 8z'/%3E%3C/g%3E%3C/svg%3E");
+}
+html:has(body.on-home) { background: var(--baby) }
 button:disabled { opacity: .4; cursor: default }
 button:focus-visible, a:focus-visible, input:focus-visible { outline: 4px solid var(--acc); outline-offset: 3px }
 .wrap { max-width: 1080px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)) }
@@ -46,18 +53,19 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 4px solid 
 .chip[aria-pressed="true"] { border-color: var(--ink); background: var(--ink); color: #fff }
 
 /* ---------- ecranul de start ---------- */
-.home { padding-block: 28px 56px; color: var(--bg-ink) }
+.home { padding-block: 28px 56px; color: var(--baby-ink) }
 .home-top { text-align: center; margin-bottom: 10px }
 .home-notes { display: flex; justify-content: center; gap: 8px; margin-bottom: 8px }
 .home-notes i { width: 22px; height: 22px; border-radius: 50%; animation: hop 2.4s ease-in-out infinite }
 .home-notes i:nth-child(2) { animation-delay: .1s } .home-notes i:nth-child(3) { animation-delay: .2s } .home-notes i:nth-child(4) { animation-delay: .3s }
 .home-notes i:nth-child(5) { animation-delay: .4s } .home-notes i:nth-child(6) { animation-delay: .5s } .home-notes i:nth-child(7) { animation-delay: .6s } .home-notes i:nth-child(8) { animation-delay: .7s }
-.home h1 { font-family: var(--display); font-weight: 800; font-size: clamp(44px, 9vw, 84px); line-height: .95; margin: 0; letter-spacing: .5px }
-.home h1 span { color: var(--hdr) }
-[data-theme="spatiu"] .home h1 span { color: var(--acc) }
-.home-top p { font-size: 19px; max-width: 46ch; margin: 10px auto 0; opacity: .85; text-wrap: balance }
+.home h1 { font-family: var(--display); font-weight: 800; margin: 0; display: flex; flex-direction: column; align-items: center; gap: 6px }
+.home .h1a { font-size: clamp(40px, 8.4vw, 80px); line-height: .95; letter-spacing: .3px; text-wrap: balance }
+.home .h1b { font-size: clamp(18px, 2.6vw, 26px); line-height: 1; letter-spacing: 3px; text-transform: uppercase; background: var(--baby-ink); color: #fff; border-radius: 999px; padding: 8px 20px 6px }
+.home-top p { font-size: 19px; max-width: 46ch; margin: 14px auto 0; text-wrap: balance }
 .home-h { font-family: var(--display); font-weight: 800; font-size: 26px; margin: 28px 0 12px; display: flex; align-items: center; gap: 10px }
-.home-h span { width: 38px; height: 38px; border-radius: 50%; background: var(--hdr); color: #fff; display: grid; place-items: center; font-size: 20px }
+.home-h span { width: 38px; height: 38px; border-radius: 50%; background: var(--baby-ink); color: #fff; display: grid; place-items: center; font-size: 20px; flex: none }
+.home-notes i { box-shadow: 0 0 0 3px rgba(255, 255, 255, .7) }
 .worlds { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px }
 .world {
   border: 0; border-radius: 26px; padding: 14px 8px 16px; position: relative;
@@ -67,7 +75,8 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 4px solid 
 }
 .world[data-t="spatiu"] { color: #fff }
 .world:hover { transform: translateY(-3px) }
-.world[aria-pressed="true"] { box-shadow: inset 0 0 0 4px var(--wh), 0 0 0 6px var(--wa), 0 6px 0 6px var(--wh) }
+.world[aria-pressed="true"] { box-shadow: inset 0 0 0 4px var(--wh), 0 0 0 6px #fff, 0 6px 0 6px var(--baby-ink) }
+.w-txt { display: flex; flex-direction: column; align-items: center }
 .w-num { position: absolute; top: 10px; left: 10px; width: 32px; height: 32px; border-radius: 50%; background: var(--wh); color: var(--wi); font-family: var(--display); font-weight: 800; display: grid; place-items: center }
 .w-pics { display: flex; justify-content: center; margin: 4px 0 4px }
 .w-pics svg { width: 54px; height: 54px; margin: 0 -6px }
@@ -77,13 +86,15 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 4px solid 
 .ages { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px }
 .age {
   border: 0; border-radius: 22px; background: #fff; padding: 14px 16px; text-align: left; color: var(--ink);
-  display: grid; grid-template-columns: auto 1fr; column-gap: 10px; align-items: baseline; box-shadow: 0 5px 0 var(--paper-sh);
+  display: grid; grid-template-columns: auto 1fr; column-gap: 10px; align-items: baseline; box-shadow: 0 5px 0 var(--baby-d);
 }
 .age b { font-family: var(--display); font-weight: 800; font-size: 40px; line-height: 1; grid-row: span 2 }
 .age span { font-family: var(--display); font-weight: 800; font-size: 20px }
 .age small { color: var(--ink-soft); font-size: 14px; line-height: 1.25 }
-.age[aria-pressed="true"] { box-shadow: inset 0 0 0 4px var(--hdr), 0 5px 0 var(--hdr); }
+.age[aria-pressed="true"] { box-shadow: inset 0 0 0 4px var(--baby-ink), 0 5px 0 var(--baby-ink); }
 .home-go { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-top: 30px }
+.btn.home-cta { background: var(--baby-ink); color: #fff; box-shadow: 0 5px 0 #061A33 }
+.btn.home-alt { background: #fff; color: var(--baby-ink); box-shadow: 0 5px 0 var(--baby-d) }
 
 /* ---------- banda de sus ---------- */
 .hq { background: var(--hdr); color: #fff; padding-block: 12px 0; border-bottom: 6px solid var(--acc) }
@@ -215,19 +226,94 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 4px solid 
 @keyframes fall { to { transform: translateY(calc(100vh + 120px)) rotate(240deg) } }
 @media (prefers-reduced-motion: reduce) { *, *::before { animation: none !important; transition: none !important } }
 
-@media (max-width: 900px) {
-  .worlds { grid-template-columns: repeat(3, minmax(0, 1fr)) }
-}
-@media (max-width: 720px) {
-  .cards { grid-template-columns: repeat(2, minmax(0, 1fr)) }
-  .quiz { grid-template-columns: minmax(0, 1fr) }
+/* miniaturile din afara ecranului nu se desenează până nu ajungi la ele */
+.thumbs .scaler > .page { content-visibility: auto; contain-intrinsic-size: 210mm 297mm }
+
+/* laptop cu ecran scund (1366×768 și asemănătoare): clapele încap fără derulare */
+@media (min-width: 721px) and (max-height: 860px) {
+  .main { padding-block: 16px 32px }
+  .sheet { padding-top: 16px }
+  .sheet-head { margin-bottom: 10px }
   .key { min-height: 150px }
-  .hq-pics { display: none }
+  .key svg { max-width: 54px }
+  .track { padding-block: 8px 10px }
+  .bub { width: 44px; height: 44px; font-size: 16px }
+  .bub.long { width: 62px }
+  .stairs-wrap { height: 220px }
+  .home { padding-block: 18px 36px }
+  .home-h { margin: 18px 0 10px }
+}
+
+/* tabletă */
+@media (max-width: 900px) {
+  .worlds { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px }
+  .w-pics svg { width: 40px; height: 40px }
+  .w-pics svg:nth-child(2) { width: 50px; height: 50px }
+  .world b { font-size: 18px }
+  .w-num { width: 26px; height: 26px; font-size: 14px; top: 6px; left: 6px }
+}
+
+/* telefon */
+@media (max-width: 720px) {
+  body { font-size: 16px }
+  .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px }
+  .quiz { grid-template-columns: minmax(0, 1fr); gap: 12px }
+  .quiz .staff-box svg { max-height: 190px; width: auto !important; margin: 0 auto }
+  .staff-box.wide svg { min-width: 520px }
+  .key { min-height: 150px; border-radius: 0 0 12px 12px }
+  .keys { gap: 4px }
   .say span { display: none }
-  .worlds { grid-template-columns: repeat(2, minmax(0, 1fr)) }
+  .sheet-head { flex-wrap: nowrap; gap: 10px }
+  .sheet-head > div { flex: 1 1 0 }
   .ages { grid-template-columns: minmax(0, 1fr) }
+  .btn { font-size: 18px; padding: 11px 16px }
   .btn.big { font-size: 22px; padding: 14px 20px }
-  .pal { width: 48px; height: 48px; font-size: 12px }
+  .pal { width: 46px; height: 46px; font-size: 11px }
+  .chips { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; margin-inline: -4px; padding: 2px 4px 4px }
+  .chips::-webkit-scrollbar { display: none }
+  .chip { flex: none }
+  .thumbs { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px }
+  .thumb-pick { font-size: 13px }
+  .sheet { border-radius: 22px }
+  .main { padding-block: 14px 32px }
+  .msg { font-size: 19px }
+
+  /* banda de sus pe un singur rând, filele compacte */
+  .hq { padding-block: 8px 0 }
+  .hq-row { flex-wrap: nowrap; gap: 8px }
+  .hq-pics { display: none }
+  .home-btn { width: 40px; height: 40px; border-radius: 12px }
+  .hq h1 { font-size: 22px; margin: 0; flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis }
+  .hq h1 span { display: none }
+  .age-pill { font-size: 12px; padding: 3px 8px; flex: none }
+  .bones { font-size: 18px; padding: 4px 12px 4px 8px; gap: 6px; flex: none; margin-left: 0 }
+  .bones svg { width: 30px; height: 20px }
+  .tabs { padding-top: 8px; gap: 4px }
+  .tab { font-size: 15px; padding: 7px 11px 9px; gap: 6px; border-radius: 12px 12px 0 0 }
+  .tab small { display: none }
+  .tab .num { width: 22px; height: 22px; font-size: 13px }
+
+  /* meniul mare: lumile ca listă, câte una pe rând */
+  .home { padding-block: 18px 40px }
+  .home-top p { font-size: 16px }
+  .home-h { font-size: 21px; margin: 20px 0 10px }
+  .home-h span { width: 32px; height: 32px; font-size: 17px }
+  .worlds { grid-template-columns: minmax(0, 1fr); gap: 12px }
+  .world { flex-direction: row; justify-content: flex-start; gap: 12px; padding: 10px 14px 10px 50px; text-align: left }
+  .w-num { top: 50%; left: 12px; transform: translateY(-50%) }
+  .w-pics { margin: 0 }
+  .w-pics svg { width: 44px; height: 44px }
+  .w-pics svg:nth-child(2) { width: 54px; height: 54px; margin-top: -4px }
+  .w-txt { align-items: flex-start }
+  .world b { font-size: 21px }
+  .world:hover { transform: none }
+  .home-go { flex-direction: column; align-items: stretch }
+  .home-go .btn { justify-content: center }
+}
+@media (max-width: 380px) {
+  .key b { font-size: 14px }
+  .crayon b { font-size: 13px }
+  .age-pill { display: none }
 }
 
 /* =========================================================

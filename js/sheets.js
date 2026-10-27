@@ -24,7 +24,7 @@
         <header class="pg-head"><span class="pg-brand">${T.name} Do-Re-Mi</span><span class="pg-name">Nume:<i></i></span></header>
         ${heading ? `<h3 class="pg-title">${heading}</h3>` : ""}${hint ? `<p class="pg-hint">${hint}</p>` : ""}
         <div class="pg-body">${body}</div>
-        <footer class="pg-foot">Muzica Andreei · ${T.name} · ${A.label}</footer>
+        <footer class="pg-foot">Andreea Rotariu Music Hub · ${T.name} · ${A.label}</footer>
       </article>`
     };
   }
